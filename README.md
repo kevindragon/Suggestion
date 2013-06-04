@@ -3,4 +3,4 @@ Suggestion
 
 Suggestion for LNC including Chinese spellchecker
 
-First step is spellcheck
+First step is spell checker
