@@ -7,6 +7,7 @@ import java.io.Reader;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
+import org.apache.lucene.analysis.cjk.CJKAnalyzer;
 import org.apache.lucene.analysis.core.LowerCaseFilter;
 import org.apache.lucene.analysis.core.StopAnalyzer;
 import org.apache.lucene.analysis.core.StopFilter;
@@ -14,6 +15,7 @@ import org.apache.lucene.analysis.shingle.ShingleFilter;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.search.spell.NGramDistance;
 import org.apache.lucene.search.spell.PlainTextDictionary;
 import org.apache.lucene.search.spell.SpellChecker;
 import org.apache.lucene.store.FSDirectory;
@@ -52,7 +54,7 @@ public class MySpellcheck {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException {
-		Analyzer analyzer = new NGramAnalyzer(1, 1);
+		Analyzer analyzer = new CJKAnalyzer(Version.LUCENE_43);
 		// TODO Auto-generated method stub
 		SpellChecker spellchecker = new SpellChecker(
 				FSDirectory.open(new File("spellIndexDirectory")));
@@ -61,7 +63,7 @@ public class MySpellcheck {
 		spellchecker.indexDictionary(
 				new PlainTextDictionary(
 						new File("myfile.txt")), conf, false);
-		String[] suggestions = spellchecker.suggestSimilar(" ֤��", 10);
+		String[] suggestions = spellchecker.suggestSimilar("稽便函", 50, 0.6f);
 		System.out.println(suggestions.length);
 		for (String word : suggestions) {
 			System.out.println("Did you mean:" + word);
